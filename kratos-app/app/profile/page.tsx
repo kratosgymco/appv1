@@ -130,7 +130,7 @@ export default function ProfilePage() {
     start.setDate(today.getDate() - today.getDay());
 
     const prs = [
-        { name: "Bench", current: "225 lbs", prediction: "275 lbs", weeks: 4 },
+        { name: "Bench", current: "285 lbs", prediction: "290 lbs", weeks: 2 },
         { name: "Squat", current: "315 lbs", prediction: "405 lbs", weeks: 3 },
         { name: "Deadlift", current: "405 lbs", prediction: "495 lbs", weeks: 6 },
     ];

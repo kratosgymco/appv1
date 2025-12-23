@@ -8,7 +8,6 @@ type Props = {
     onNext: () => void;
 };
 
-
 const schema = z.object({
     age: z.string(),
     sex: z.string(),
@@ -20,10 +19,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function AboutYouStep({ onNext }: Props) {
-    const {
-        register,
-        handleSubmit,
-    } = useForm<FormData>({
+    const { register, handleSubmit } = useForm<FormData>({
         resolver: zodResolver(schema),
     });
 
@@ -32,47 +28,63 @@ export default function AboutYouStep({ onNext }: Props) {
         onNext();
     }
 
-
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <h1 className="text-3xl font-semibold text-center">
+            <h1 className="text-3xl font-semibold text-center whitespace-nowrap">
                 Tell me about yourself!
             </h1>
-            <p className="text-md text-zinc-500 text-center">
+
+            <p className="text-md text-zinc-300 text-center">
                 This helps personalize your training.
             </p>
 
+            <input
+                type="number"
+                min={1}
+                step={1}
+                inputMode="numeric"
+                {...register("age")}
+                placeholder="Age"
+                className="w-full rounded-lg border p-3 bg-background
+             text-zinc-400 placeholder:text-zinc-400
+             focus:text-black focus:outline-none"
+            />
 
-            <select {...register("age")} className="w-full rounded-lg border p-3">
-                <option value="">Age</option>
-                {Array.from({ length: 68 }, (_, i) => (
-                    <option key={i} value={i + 13}>
-                        {i + 13}
-                    </option>
-                ))}
+
+
+            <select
+                {...register("sex")}
+                defaultValue=""
+                className="w-full rounded-lg border p-3 bg-background
+             text-zinc-400
+             focus:text-black focus:outline-none"
+            >
+                <option value="" disabled hidden>
+                    Sex
+                </option>
+                <option className="text-black">Male</option>
+                <option className="text-black">Female</option>
+                <option className="text-black">Other</option>
+                <option className="text-black">Prefer not to say</option>
             </select>
 
-            <select {...register("sex")} className="w-full rounded-lg border p-3">
-                <option value="">Sex</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-                <option>Prefer not to say</option>
-            </select>
 
             <input
                 {...register("height")}
                 placeholder="Height (e.g. 5'10 or 178cm)"
-                className="w-full rounded-lg border p-3"
+                className="w-full rounded-lg border p-3 bg-background text-foreground"
             />
 
             <input
                 {...register("weight")}
                 placeholder="Weight (lbs or kg)"
-                className="w-full rounded-lg border p-3"
+                className="w-full rounded-lg border p-3 bg-background text-foreground"
             />
 
-            <select {...register("experience")} className="w-full rounded-lg border p-3">
+            <select
+                {...register("experience")}
+                className="w-full rounded-lg border p-3 bg-background text-foreground"
+            >
                 <option value="">Training experience</option>
                 <option>Beginner</option>
                 <option>Intermediate</option>
@@ -81,11 +93,10 @@ export default function AboutYouStep({ onNext }: Props) {
 
             <button
                 type="submit"
-                className="h-12 w-full rounded-full bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition"
+                className="h-12 w-full rounded-full bg-red-600 text-lg font-semibold text-white hover:bg-red-700 active:bg-red-800 transition"
             >
                 Continue
             </button>
-
         </form>
     );
 }

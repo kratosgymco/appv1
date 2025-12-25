@@ -68,7 +68,7 @@ export default function AboutYouStep({ onNext }: Props) {
                 />
 
                 {ageValue && (
-                    <span className="pointer-events-none absolute right-73.5 top-1/2 -translate-y-1/2 text-black">
+                    <span className="pointer-events-none absolute right-69 top-1/2 -translate-y-1/2 text-black">
                         (years old)
                     </span>
                 )}
@@ -98,7 +98,7 @@ export default function AboutYouStep({ onNext }: Props) {
                     className={fieldClass}
                 />
                 {watch("height") && (
-                    <span className="pointer-events-none absolute right-77.5 top-1/2 -translate-y-1/2 text-black">
+                    <span className="pointer-events-none absolute right-75.5 top-1/2 -translate-y-1/2 text-black">
                         (ft'in)
                     </span>
                 )}
@@ -114,7 +114,7 @@ export default function AboutYouStep({ onNext }: Props) {
                     className={fieldClass}
                 />
                 {watch("weight") && (
-                    <span className="pointer-events-none absolute right-80.5 top-1/2 -translate-y-1/2 text-black">
+                    <span className="pointer-events-none absolute right-79.5 top-1/2 -translate-y-1/2 text-black">
                         (lbs)
                     </span>
                 )}

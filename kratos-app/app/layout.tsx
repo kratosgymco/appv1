@@ -1,5 +1,8 @@
+"use client";
+
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { usePathname } from "next/navigation";
 import BottomNav from "@/components/BottomNav";
 
 const inter = Inter({
@@ -7,28 +10,32 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata = {
-  title: "Kratos",
-  description: "Kratos Training Platform",
-};
+const SHOW_NAV_ROUTES = [
+  "/profile",
+  "/workouts",
+  "/recovery",
+  "/settings",
+];
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  const showBottomNav = SHOW_NAV_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(route + "/")
+  );
+
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans bg-black text-white`}>
-        {/* Page content */}
-        <div className="flex min-h-screen w-full flex-col items-center pb-20">
-          <main className="w-full max-w-md px-6">
-            {children}
-          </main>
+        <div className="min-h-screen pb-20">
+          {children}
         </div>
 
-        {/* Bottom navigation */}
-        <BottomNav />
+        {showBottomNav && <BottomNav />}
       </body>
     </html>
   );

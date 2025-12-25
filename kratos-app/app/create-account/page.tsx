@@ -29,11 +29,11 @@ export default function CreateAccountPage() {
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!formValid) return;
-        router.push("/onboarding/about-you");
+        router.push("/about-you");
     }
 
     return (
-        <div className="mx-auto max-w-md py-16">
+        <div className="mx-auto max-w-xs py-16">
             <h1 className="mb-2 text-center text-2xl font-semibold">
                 Create Your Account!
             </h1>

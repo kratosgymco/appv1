@@ -13,7 +13,8 @@ type Props = {
 const schema = z.object({
     age: z.string().min(1),
     sex: z.string(),
-    height: z.string(),
+    heightFt: z.string(),
+    heightIn: z.string(),
     weight: z.string(),
     experience: z.string(),
     activityLevel: z.string(),
@@ -87,17 +88,27 @@ export default function AboutYouStep({ onNext }: Props) {
                         placeholder="Age"
                         {...register("age")}
                         onKeyDown={(e) => {
-                            if (e.key === "-" || e.key === "e" || e.key === "E") {
+                            if (["-", "e", "E", "+"].includes(e.key)) {
                                 e.preventDefault();
                             }
+                        }}
+                        onInput={(e) => {
+                            const el = e.target as HTMLInputElement;
+                            if (el.value === "") return;
+                            if (Number(el.value) < 1) el.value = "1";
                         }}
                         className="h-12 w-full rounded-xl border border-zinc-200 bg-white px-4 pr-12 text-black placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-600"
                     />
 
+
                     {/* SAME POSITION AS BEFORE */}
-                    <span className="pointer-events-none absolute right-13 top-1/2 -translate-y-1/2 text-md text-zinc-400">
+                    <span
+                        className={`pointer-events-none absolute top-1/2 -translate-y-1/2 text-md text-zinc-400 transition-all ${watch("age") ? "right-3" : "left-12.5"
+                            }`}
+                    >
                         (years)
                     </span>
+
                 </div>
 
                 <div className="relative">
@@ -117,7 +128,7 @@ export default function AboutYouStep({ onNext }: Props) {
                     </select>
 
                     {watch("sex") && (
-                        <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-md text-zinc-400">
+                        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-md text-zinc-400">
                             (sex)
                         </span>
                     )}
@@ -126,13 +137,71 @@ export default function AboutYouStep({ onNext }: Props) {
 
             {/* HEIGHT + WEIGHT */}
             <div className="grid grid-cols-2 gap-3">
-                <div className="relative">
-                    <input
-                        {...register("height")}
-                        placeholder={units === "us" ? "Height (ft/in)" : "Height (cm)"}
-                        className="w-full h-12 rounded-xl border border-zinc-200 bg-white px-4 pr-4 text-black placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none"
-                    />
+                <div className="grid grid-cols-2 gap-3">
+                    {/* HEIGHT FT */}
+                    <div className="relative">
+                        <input
+                            type="number"
+                            min={1}
+                            max={8}
+                            step={1}
+                            inputMode="numeric"
+                            placeholder="Ht"
+                            {...register("heightFt")}
+                            onKeyDown={(e) => {
+                                if (["-", "e", "E", "+"].includes(e.key)) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            onInput={(e) => {
+                                const el = e.target as HTMLInputElement;
+                                if (el.value === "") return;
+                                const v = Number(el.value);
+                                if (v < 1) el.value = "1";
+                                if (v > 8) el.value = "8";
+                            }}
+                            className="h-12 w-full rounded-xl border border-zinc-200 bg-white px-3 pr-10 text-black placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none"
+                        />
+
+
+                        <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-md text-zinc-400">
+                            (ft)
+                        </span>
+                    </div>
+
+                    {/* HEIGHT IN */}
+                    <div className="relative">
+                        <input
+                            type="number"
+                            min={0}
+                            max={11}
+                            step={1}
+                            inputMode="numeric"
+                            placeholder="Ht"
+                            {...register("heightIn")}
+                            onKeyDown={(e) => {
+                                if (["-", "e", "E", "+"].includes(e.key)) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            onInput={(e) => {
+                                const el = e.target as HTMLInputElement;
+                                if (el.value === "") return;
+                                const v = Number(el.value);
+                                if (v < 0) el.value = "0";
+                                if (v > 11) el.value = "11";
+                            }}
+                            className="h-12 w-full rounded-xl border border-zinc-200 bg-white px-3 pr-10 text-black placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none"
+                        />
+
+
+                        <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-md text-zinc-400">
+                            (in)
+                        </span>
+                    </div>
                 </div>
+
+
 
                 <div className="relative">
                     <input
@@ -143,9 +212,13 @@ export default function AboutYouStep({ onNext }: Props) {
                         className={fieldClass}
                     />
 
-                    <span className="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 text-md text-zinc-400">
+                    <span
+                        className={`pointer-events-none absolute top-1/2 -translate-y-1/2 text-md text-zinc-400 transition-all ${watch("weight") ? "right-3" : "left-18"
+                            }`}
+                    >
                         {units === "us" ? "(lbs)" : "(kg)"}
                     </span>
+
                 </div>
             </div>
 
@@ -185,13 +258,27 @@ export default function AboutYouStep({ onNext }: Props) {
             <div className="relative">
                 <input
                     type="number"
-                    min={1}
+                    min={0}
                     max={60}
                     step={0.1}
+                    inputMode="decimal"
                     {...register("bodyFat")}
                     placeholder="Body fat % (optional)"
-                    className={`${fieldClass} pr-10`}
+                    onKeyDown={(e) => {
+                        if (["-", "e", "E", "+"].includes(e.key)) {
+                            e.preventDefault();
+                        }
+                    }}
+                    onInput={(e) => {
+                        const el = e.target as HTMLInputElement;
+                        if (el.value === "") return;
+                        const v = Number(el.value);
+                        if (v < 0) el.value = "0";
+                        if (v > 60) el.value = "60";
+                    }}
+                    className={`${fieldClass} pr-12`}
                 />
+
 
                 {/* ? ICON — CLICK (text popup) */}
                 <div
@@ -286,6 +373,13 @@ export default function AboutYouStep({ onNext }: Props) {
                         </p>
                     </div>
                 )}
+                {watch("bodyFat") && (
+                    <span className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 text-md text-zinc-400">
+                        %
+                    </span>
+                )}
+
+
             </div>
 
 

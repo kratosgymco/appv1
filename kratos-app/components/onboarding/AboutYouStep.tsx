@@ -9,7 +9,7 @@ type Props = {
 };
 
 const schema = z.object({
-    age: z.string(),
+    age: z.string().min(1),
     sex: z.string(),
     height: z.string(),
     weight: z.string(),
@@ -18,10 +18,19 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+const fieldClass =
+    "w-full h-12 rounded-xl border border-zinc-200 bg-white px-4 pr-16 text-black placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none";
+
 export default function AboutYouStep({ onNext }: Props) {
-    const { register, handleSubmit } = useForm<FormData>({
+    const {
+        register,
+        handleSubmit,
+        watch,
+    } = useForm<FormData>({
         resolver: zodResolver(schema),
     });
+
+    const ageValue = watch("age");
 
     function onSubmit(data: FormData) {
         console.log("ABOUT YOU:", data);
@@ -38,26 +47,35 @@ export default function AboutYouStep({ onNext }: Props) {
                 This helps personalize your training.
             </p>
 
-            <input
-                type="number"
-                min={1}
-                step={1}
-                inputMode="numeric"
-                {...register("age")}
-                placeholder="Age"
-                className="w-full rounded-lg border p-3 bg-background
-             text-zinc-400 placeholder:text-zinc-400
-             focus:text-black focus:outline-none"
-            />
+            {/* AGE */}
+            <div className="relative">
+                <input
+                    type="number"
+                    min={1}
+                    step={1}
+                    placeholder="Age"
+                    {...register("age")}
+                    onKeyDown={(e) => {
+                        if (e.key === "-" || e.key === "e" || e.key === "E") {
+                            e.preventDefault();
+                        }
+                    }}
+                    className="h-12 w-full rounded-xl border border-zinc-200 bg-white px-4 pr-28 text-black placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+                />
 
+                {ageValue && (
+                    <span className="pointer-events-none absolute right-73.5 top-1/2 -translate-y-1/2 text-black">
+                        (years old)
+                    </span>
+                )}
+            </div>
 
-
+            {/* SEX */}
             <select
                 {...register("sex")}
                 defaultValue=""
-                className="w-full rounded-lg border p-3 bg-background
-             text-zinc-400
-             focus:text-black focus:outline-none"
+                className={`${fieldClass} ${watch("sex") ? "text-black" : "text-zinc-400"
+                    }`}
             >
                 <option value="" disabled hidden>
                     Sex
@@ -68,32 +86,54 @@ export default function AboutYouStep({ onNext }: Props) {
                 <option className="text-black">Prefer not to say</option>
             </select>
 
+            {/* HEIGHT */}
+            <div className="relative">
+                <input
+                    {...register("height")}
+                    placeholder={`Height (e.g. 5'10")`}
+                    className={fieldClass}
+                />
+                {watch("height") && (
+                    <span className="pointer-events-none absolute right-77.5 top-1/2 -translate-y-1/2 text-black">
+                        (ft'in)
+                    </span>
+                )}
+            </div>
 
-            <input
-                {...register("height")}
-                placeholder="Height (e.g. 5'10 or 178cm)"
-                className="w-full rounded-lg border p-3 bg-background text-foreground"
-            />
+            {/* WEIGHT */}
+            <div className="relative">
+                <input
+                    type="number"
+                    min={1}
+                    {...register("weight")}
+                    placeholder="Weight"
+                    className={fieldClass}
+                />
+                {watch("weight") && (
+                    <span className="pointer-events-none absolute right-80.5 top-1/2 -translate-y-1/2 text-black">
+                        (lbs)
+                    </span>
+                )}
+            </div>
 
-            <input
-                {...register("weight")}
-                placeholder="Weight (lbs or kg)"
-                className="w-full rounded-lg border p-3 bg-background text-foreground"
-            />
-
+            {/* EXPERIENCE */}
             <select
                 {...register("experience")}
-                className="w-full rounded-lg border p-3 bg-background text-foreground"
+                defaultValue=""
+                className={`${fieldClass} ${watch("experience") ? "text-black" : "text-zinc-400"
+                    }`}
             >
-                <option value="">Training experience</option>
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
+                <option value="" disabled hidden>
+                    Training experience
+                </option>
+                <option className="text-black">Beginner</option>
+                <option className="text-black">Intermediate</option>
+                <option className="text-black">Advanced</option>
             </select>
 
             <button
                 type="submit"
-                className="h-12 w-full rounded-full bg-red-600 text-lg font-semibold text-white hover:bg-red-700 active:bg-red-800 transition"
+                className="h-12 w-full rounded-full bg-red-600 text-xl font-semibold text-white hover:bg-red-700 active:bg-red-800 transition"
             >
                 Continue
             </button>

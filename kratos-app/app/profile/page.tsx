@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-
-
 import { format } from "date-fns";
 import {
     Trophy,
@@ -9,40 +7,56 @@ import {
     Flame,
     Clock,
     TrendingUp,
-    Armchair,
-    Activity,
-    Weight,
+    Target
 } from "lucide-react";
+
 
 function StatCard({
     label,
     value,
     Icon,
-    centered = false,
+    compact = false,
 }: {
     label: string;
     value: string;
     Icon: React.ComponentType<{ className?: string }>;
-    centered?: boolean;
+    compact?: boolean;
 }) {
 
     return (
-        <div
-            className={`h-20 rounded-2xl bg-red-800 border border-red-900 shadow-lg px-4 py-3 flex items-center ${centered ? "justify-center text-center w-full" : ""
-                }`}
-        >
-            <div className="flex items-center gap-3">
-                <div className="rounded-xl bg-zinc-950 p-2">
-                    <Icon className="h-5 w-5 text-white" />
+        <div className="h-20 rounded-2xl bg-red-800 border border-red-900 shadow-lg px-4 py-3 flex flex-col justify-center">
+
+            {/* Title */}
+            <p className="text-sm text-red-100 text-center whitespace-nowrap mb-1">
+                {label}
+            </p>
+
+            {/* Locked grid for alignment */}
+            <div className="grid grid-cols-[40px_1fr] items-center justify-center gap-3">
+
+                {/* ICON — fixed column */}
+                <div className="flex justify-center">
+                    <div className="rounded-xl bg-zinc-950 p-2">
+                        <Icon className="h-5 w-5 text-white" />
+                    </div>
                 </div>
-                <div>
-                    <p className="text-xs text-red-100">{label}</p>
-                    <p className="text-2xl font-bold text-white">{value}</p>
-                </div>
+
+                {/* VALUE — fixed start line */}
+                <p
+                    className={`font-bold text-white whitespace-nowrap ${compact ? "text-lg tracking-tight" : "text-2xl"
+                        }`}
+                >
+                    {value}
+                </p>
+
             </div>
         </div>
     );
 }
+
+
+
+
 
 function ScheduleTile({
     dateLabel,
@@ -191,11 +205,11 @@ function PRCard({
                 </div>
             </div>
 
-            <p className="text-sm text-white font-semibold text-center mb-2">{name}</p>
+            <p className="text-lg text-white font-semibold text-center mb-2">{name}</p>
             <p className="text-2xl font-black text-white text-center mb-3">{current}</p>
 
-            <div className="pt-3 border-t border-white/20">
-                <p className="text-[10px] font-bold text-yellow-300 uppercase tracking-wider text-center mb-2">
+            <div className="pt-3 border-t border-white/75">
+                <p className="text-[10px] font-bold text-yellow-300 uppercase tracking-wider text-center whitespace-nowrap mb-2">
                     AI Prediction
                 </p>
                 <p className="text-xs text-white text-center mb-1">On track for:</p>
@@ -214,13 +228,45 @@ export default function ProfilePage() {
     };
 
     const ALL_OBJECTIVES = [
-        { id: "workoutsWeek", label: "This week’s workouts", value: "0", icon: Dumbbell },
-        { id: "calories", label: "Calories burned", value: "0", icon: Flame },
-        { id: "activeTime", label: "Total active time", value: "0 min", icon: Clock },
-        { id: "sleep", label: "Average sleep", value: "7.2 hrs", icon: Clock },
-        { id: "currentGoal", label: "Current goal", value: "Hypertrophy", icon: TrendingUp },
-        { id: "targetWeight", label: "Target weight", value: "185 lbs", icon: TrendingUp },
+        {
+            id: "workoutsWeek",
+            label: "This week’s workouts",
+            value: "0 wkts",
+            icon: Dumbbell,
+        },
+        {
+            id: "calories",
+            label: "Calories burned",
+            value: "0 cals",
+            icon: Flame,
+        },
+        {
+            id: "activeTime",
+            label: "Total active time",
+            value: "0 mins",
+            icon: Clock,
+        },
+        {
+            id: "sleep",
+            label: "Average sleep",
+            value: "7.2 hrs",
+            icon: Clock,
+        },
+        {
+            id: "currentGoal",
+            label: "Current goal",
+            value: "Hypertrophy",
+            icon: TrendingUp,
+        },
+        {
+            id: "targetWeight",
+            label: "Target weight",
+            value: "185 lbs",
+            icon: Target,
+        },
     ];
+
+
 
     const [selectedObjectives, setSelectedObjectives] = useState<string[]>([
         "targetWeight",
@@ -306,8 +352,9 @@ export default function ProfilePage() {
                                         label={s.label}
                                         value={s.value}
                                         Icon={s.icon}
-                                        centered={isLastSingle}
+                                        compact={!isLastSingle}
                                     />
+
                                 </div>
                             );
                         })}
@@ -325,7 +372,7 @@ export default function ProfilePage() {
 
 
                 {/* Workout Schedule */}
-                <div className="space-y-4">
+                <div className="space-y-3">
                     <h2 className="text-xl font-bold">Your Workout Schedule</h2>
 
                     <div className="rounded-2xl bg-zinc-900/80 backdrop-blur border border-zinc-800 shadow-md p-4">
@@ -363,7 +410,7 @@ export default function ProfilePage() {
                                 setSchedule(next);
                             }}
                             disabled={previousSchedule !== null}
-                            className="flex-1 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 py-3 font-semibold disabled:opacity-50"
+                            className="flex-1 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 py-2 font-semibold disabled:opacity-50"
                         >
                             Make Today Rest Day
                         </button>
@@ -389,7 +436,9 @@ export default function ProfilePage() {
                     <h2 className="text-xl font-bold flex items-center gap-2">
                         <Trophy className="w-5 h-5 text-yellow-500" />
                         Personal Records
+                        <Trophy className="w-5 h-5 text-yellow-500" />
                     </h2>
+
 
                     <div className="grid grid-cols-3 gap-3">
                         {prs.map((p) => (
@@ -415,54 +464,63 @@ export default function ProfilePage() {
                 </div>
             </div>
             {showObjectivePicker && (
-                <div className="fixed inset-20 z-50 bg-black/0 flex justify-center items-end">
-                    <div className="w-full max-w-md rounded-t-2xl bg-black border-t border-zinc-800 p-6 max-h-[70vh] overflow-y-auto">
+                <div className="fixed inset-0 z-50 bg-black/70 flex items-end">
+                    {/* center to same width as page */}
+                    <div className="w-full flex justify-center px-6">
+                        {/* actual sheet */}
+                        <div className="w-full max-w-md rounded-t-2xl bg-black border border-zinc-800">
+                            {/* header */}
+                            <div className="relative px-6 pt-6 pb-4">
+                                <h2 className="text-lg font-semibold text-center">Choose objectives</h2>
+                                <button
+                                    onClick={() => setShowObjectivePicker(false)}
+                                    className="absolute right-6 top-6 text-sm text-zinc-400 hover:text-white"
+                                >
+                                    Done
+                                </button>
+                            </div>
 
-                        {/* Header */}
-                        <div className="relative mb-4 flex items-center justify-center">
-                            <h2 className="text-lg font-semibold text-center">
-                                Choose objectives
-                            </h2>
-                            <button
-                                onClick={() => setShowObjectivePicker(false)}
-                                className="absolute right-0 text-sm text-zinc-400 hover:text-white"
-                            >
-                                Done
-                            </button>
-                        </div>
+                            {/* scrollable content */}
+                            <div className="max-h-[70vh] overflow-y-auto px-6 pb-28">
+                                <div className="grid grid-cols-2 gap-3">
+                                    {ALL_OBJECTIVES.map((obj) => {
+                                        const selected = selectedObjectives.includes(obj.id);
+                                        const disabled = !selected && selectedObjectives.length >= 4;
+
+                                        return (
+                                            <button
+                                                key={obj.id}
+                                                disabled={disabled}
+                                                onClick={() => {
+                                                    if (disabled) return;
+                                                    setSelectedObjectives((prev) =>
+                                                        selected ? prev.filter((id) => id !== obj.id) : [...prev, obj.id]
+                                                    );
+                                                }}
+                                                className={`w-full rounded-2xl border px-4 py-4 text-sm font-semibold transition
+                        ${selected
+                                                        ? "bg-red-600 border-red-700 text-white"
+                                                        : disabled
+                                                            ? "bg-zinc-800 border-zinc-700 text-zinc-500 opacity-75 cursor-not-allowed"
+                                                            : "bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800"
+                                                    }`}
 
 
-                        {/* Objective list */}
-                        <div className="grid grid-cols-2 gap-3">
-                            {ALL_OBJECTIVES.map((obj) => {
-                                const selected = selectedObjectives.includes(obj.id);
+                                            >
+                                                <span className="block text-center whitespace-nowrap">{obj.label}</span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
 
-                                return (
-                                    <button
-                                        key={obj.id}
-                                        onClick={() => {
-                                            setSelectedObjectives((prev) =>
-                                                selected
-                                                    ? prev.filter((id) => id !== obj.id)
-                                                    : prev.length < 4
-                                                        ? [...prev, obj.id]
-                                                        : prev
-                                            );
-                                        }}
-                                        className={`rounded-xl border px-3 py-4 text-sm font-medium transition
-                ${selected
-                                                ? "bg-red-600 border-red-700 text-white"
-                                                : "border-zinc-700 text-zinc-400"
-                                            }`}
-                                    >
-                                        {obj.label}
-                                    </button>
-                                );
-                            })}
+                                {/* extra space so it doesn’t get covered by BottomNav */}
+                                <div className="h-20" />
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
+
 
 
         </div>

@@ -29,7 +29,7 @@ export default function CreateAccountPage() {
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!formValid) return;
-        router.push("/about-you");
+        router.push("/onboarding/about-you");
     }
 
     return (
@@ -96,7 +96,6 @@ export default function CreateAccountPage() {
                 >
                     Create Account
                 </button>
-                router.push("/AboutYouStep");
 
             </form>
         </div>

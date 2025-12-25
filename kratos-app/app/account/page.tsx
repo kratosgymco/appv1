@@ -1,8 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AccountPage() {
+    const router = useRouter();
+
+    function handleLogin(e: React.FormEvent) {
+        e.preventDefault();
+        router.push("/profile");
+    }
+
     return (
         <div className="flex min-h-screen items-center justify-center px-4 -mt-8">
             <div className="w-full max-w-md">
@@ -10,7 +18,7 @@ export default function AccountPage() {
                     Log in to your account
                 </h1>
 
-                <form className="flex flex-col gap-3">
+                <form onSubmit={handleLogin} className="flex flex-col gap-4">
                     <Input label="Username or Email" type="text" />
                     <Input label="Password" type="password" />
 
@@ -30,7 +38,10 @@ export default function AccountPage() {
                         </Link>
                     </div>
 
-                    <button className="mt-4 h-12 rounded-full bg-red-600 text-white hover:bg-red-700">
+                    <button
+                        type="submit"
+                        className="mt-4 h-12 rounded-full bg-red-600 text-white hover:bg-red-700"
+                    >
                         Log In
                     </button>
                 </form>

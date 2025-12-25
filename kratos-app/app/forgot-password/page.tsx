@@ -43,13 +43,22 @@ export default function ForgotPasswordPage() {
                 </p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    <input
-                        {...register("email")}
-                        placeholder="Email address"
-                        disabled={codeSent}
-                        className={`${fieldClass} ${codeSent ? "bg-zinc-100 cursor-not-allowed" : ""
-                            }`}
-                    />
+                    <div className="flex flex-col">
+                        <input
+                            {...register("email")}
+                            placeholder="Email address"
+                            disabled={codeSent}
+                            className={`${fieldClass} ${codeSent ? "bg-zinc-100 cursor-not-allowed" : ""
+                                }`}
+                        />
+
+                        <span className="mt-1.5 text-xs text-red-500">
+                            * required
+                        </span>
+                    </div>
+
+
+
 
                     {!codeSent && (
                         <button

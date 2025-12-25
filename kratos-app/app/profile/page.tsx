@@ -468,7 +468,7 @@ export default function ProfilePage() {
                     {/* center to same width as page */}
                     <div className="w-full flex justify-center px-6">
                         {/* actual sheet */}
-                        <div className="w-full max-w-md rounded-t-2xl bg-black border border-zinc-800">
+                        <div className="w-full max-w-md translate-y-22 rounded-t-2xl bg-black border border-zinc-800">
                             {/* header */}
                             <div className="relative px-6 pt-6 pb-4">
                                 <h2 className="text-lg font-semibold text-center">Choose objectives</h2>
@@ -497,18 +497,20 @@ export default function ProfilePage() {
                                                         selected ? prev.filter((id) => id !== obj.id) : [...prev, obj.id]
                                                     );
                                                 }}
-                                                className={`w-full rounded-2xl border px-4 py-4 text-sm font-semibold transition
-                        ${selected
+                                                className={`w-full h-16 rounded-2xl border px-3 text-sm font-semibold transition
+                                                  flex items-center justify-center text-center
+                                                    ${selected
                                                         ? "bg-red-600 border-red-700 text-white"
                                                         : disabled
                                                             ? "bg-zinc-800 border-zinc-700 text-zinc-500 opacity-75 cursor-not-allowed"
                                                             : "bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800"
                                                     }`}
-
-
                                             >
-                                                <span className="block text-center whitespace-nowrap">{obj.label}</span>
+                                                <span className="line-clamp-2 leading-tight text-[12px]">
+                                                    {obj.label}
+                                                </span>
                                             </button>
+
                                         );
                                     })}
                                 </div>

@@ -4,35 +4,37 @@ import Link from "next/link";
 
 export default function AccountPage() {
     return (
-        <div className="mx-auto max-w-md py-16">
-            <h1 className="mb-8 text-center text-2xl font-semibold">
-                Log in to your account
-            </h1>
+        <div className="flex min-h-screen items-center justify-center px-4 -mt-8">
+            <div className="w-full max-w-md">
+                <h1 className="mb-8 text-center text-2xl font-semibold">
+                    Log in to your account
+                </h1>
 
-            <form className="flex flex-col gap-4">
-                <Input label="Username or Email" type="text" />
-                <Input label="Password" type="password" />
+                <form className="flex flex-col gap-3">
+                    <Input label="Username or Email" type="text" />
+                    <Input label="Password" type="password" />
 
-                <div className="flex justify-between text-sm">
-                    <Link
-                        href="/forgot-password"
-                        className="text-red-600 hover:underline"
-                    >
-                        Forgot password?
-                    </Link>
+                    <div className="flex justify-between text-sm">
+                        <Link
+                            href="/forgot-password"
+                            className="text-red-600 hover:underline"
+                        >
+                            Forgot password?
+                        </Link>
 
-                    <Link
-                        href="/create-account"
-                        className="text-red-600 hover:underline"
-                    >
-                        Create account
-                    </Link>
-                </div>
+                        <Link
+                            href="/create-account"
+                            className="text-red-600 hover:underline"
+                        >
+                            Create account
+                        </Link>
+                    </div>
 
-                <button className="mt-4 h-12 rounded-full bg-red-600 text-white hover:bg-red-700">
-                    Log In
-                </button>
-            </form>
+                    <button className="mt-4 h-12 rounded-full bg-red-600 text-white hover:bg-red-700">
+                        Log In
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }
